@@ -38,4 +38,4 @@ Caso 1 (hecho a mano). 4 lugares, partida 0, matriz T:
 Tiempo de fuerza bruta y de Held-Karp en función de k, memoria estimada de la tabla de Held-Karp, y alejamiento de la heurística respecto del óptimo. 5 repeticiones y mediana; semilla fija documentada.
 
 ## Estado
-Pendiente
+En curso: algoritmos y scripts listos; faltan mediciones con la matriz real de R2
