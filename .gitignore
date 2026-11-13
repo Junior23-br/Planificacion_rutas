@@ -20,3 +20,5 @@ data/processed/*
 
 # Caché de OSMnx
 cache/
+
+!data/processed/matriz_tiempos.csv
