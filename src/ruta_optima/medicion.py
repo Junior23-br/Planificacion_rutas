@@ -8,9 +8,12 @@ Reglas que implementa:
 - Unidad de tiempo: milisegundos. Resultados en CSV.
 
 Uso (desde la raíz del proyecto):
-    python -m src.ruta_optima.medicion
+    python -m src.ruta_optima.medicion --matriz data/processed/matriz_tiempos.csv     (datos reales)
+    python -m src.ruta_optima.medicion                                                (matriz aleatoria de prueba)
 Para probar rápido:
     python -m src.ruta_optima.medicion --k-max 8 --limite-s 20
+Con la matriz real, partida en CAB01 (Armenia) y los k lugares se toman, en orden, de una
+mezcla aleatoria con semilla fija de los otros 39 lugares (los conjuntos de k crecen anidados).
 """
 import argparse
 import csv
@@ -21,6 +24,7 @@ import random
 import statistics
 import time
 
+from src.ruta_optima.datos import leer_matriz
 from src.ruta_optima.tsp import fuerza_bruta, held_karp
 
 SEMILLA = 2026
@@ -77,6 +81,8 @@ def main():
     ap.add_argument("--k-max", type=int, default=12)
     ap.add_argument("--limite-s", type=float, default=300.0)
     ap.add_argument("--salida", default="resultados")
+    ap.add_argument("--matriz", default="", help="CSV con la matriz real de R2; vacío = matriz aleatoria de prueba")
+    ap.add_argument("--inicio", default="CAB01", help="id del lugar de partida (con matriz real)")
     args = ap.parse_args()
 
     os.makedirs(args.salida, exist_ok=True)
@@ -85,13 +91,22 @@ def main():
         f.write(f"Procesador: {platform.processor()}\n")
         f.write(f"Python: {platform.python_version()}\n")
         f.write("Memoria RAM: [completar a mano]\n")
+        f.write(f"Datos: {args.matriz if args.matriz else 'matriz aleatoria de prueba'}\n")
 
-    T = generar_matriz(args.k_max + 1)   # partida = 0; lugares = 1..k
+    if args.matriz:
+        ids, T = leer_matriz(args.matriz)
+        inicio = ids.index(args.inicio)
+        otros = [i for i in range(len(ids)) if i != inicio]
+        random.Random(SEMILLA).shuffle(otros)          # orden fijo: los k lugares son otros[:k]
+        assert args.k_max <= len(otros), "k_max es mayor que el número de lugares disponibles"
+    else:
+        T = generar_matriz(args.k_max + 1)             # partida = 0; lugares = 1..k
+        inicio, otros = 0, list(range(1, args.k_max + 1))
     filas = []
     for nombre in ALGORITMOS:
         for k in range(args.k_min, args.k_max + 1):
-            lugares = list(range(1, k + 1))
-            mediana, optimo, n_rep = medir(nombre, T, 0, lugares, args.limite_s)
+            lugares = otros[:k]
+            mediana, optimo, n_rep = medir(nombre, T, inicio, lugares, args.limite_s)
             if mediana is None:
                 print(f"{nombre} k={k}: no completada (más de {args.limite_s:g} s)")
                 filas.append([nombre, k, n_rep, "", "", "no completada", SEMILLA])
