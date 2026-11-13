@@ -1,0 +1,6 @@
+red,V_antes,E_antes,V_despues,E_despues,repeticiones,mediana_ms,fuertemente_conexa
+2 km,1660,3689,1649,3674,5,56.945,True
+5 km,4301,9715,4266,9662,5,157.998,True
+10 km,5964,13452,5912,13357,5,217.748,True
+20 km,8774,20047,8752,20016,5,344.304,True
+Departamento,8807,20153,8791,20132,5,322.952,True

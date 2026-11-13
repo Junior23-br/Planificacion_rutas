@@ -1,0 +1,41 @@
+id,nombre,categoria,nodo,distancia_m,mayor_500m
+CAB01,Armenia,Cabecera municipal,10042792787,58.0,False
+CAB02,Buenavista,Cabecera municipal,8593660690,16.5,False
+CAB03,Calarcá,Cabecera municipal,3003932856,4.6,False
+CAB04,Circasia,Cabecera municipal,535905977,40.1,False
+CAB05,Córdoba,Cabecera municipal,3192289491,30.0,False
+CAB06,Filandia,Cabecera municipal,1341833467,19.3,False
+CAB07,Génova,Cabecera municipal,4466303404,31.7,False
+CAB08,La Tebaida,Cabecera municipal,5278717846,45.3,False
+CAB09,Montenegro,Cabecera municipal,960390421,31.6,False
+CAB10,Pijao,Cabecera municipal,4818636827,11.3,False
+CAB11,Quimbaya,Cabecera municipal,3989083941,8.3,False
+CAB12,Salento,Cabecera municipal,532613882,24.2,False
+ATR01,Parque Nacional del Café,Atractivo turístico,11276245850,197.1,False
+ATR02,Parque Los Arrieros,Atractivo turístico,12601257331,354.5,False
+ATR03,PANACA,Atractivo turístico,10170791792,81.1,False
+ATR04,Museo del Oro Quimbaya,Atractivo turístico,338985769,0.9,False
+ATR05,Parque de la Vida,Atractivo turístico,6938572956,38.1,False
+ATR06,Jardín Botánico del Quindío (Mariposario),Atractivo turístico,3286876090,254.2,False
+ATR07,RECUCA,Atractivo turístico,6334517962,582.5,True
+ATR08,Ecoparque Peñas Blancas,Atractivo turístico,6020831890,243.8,False
+ATR09,Valle del Cocora,Atractivo turístico,1543526033,1046.4,True
+ATR10,Mirador Alto de la Cruz,Atractivo turístico,2107061017,170.6,False
+ATR11,Mirador Colina Iluminada,Atractivo turístico,2099850848,125.8,False
+ATR12,La Pedregosa,Atractivo turístico,5811037565,711.5,True
+ATR13,Café San Alberto,Atractivo turístico,2104432131,274.9,False
+ATR14,Aldea del Artesano,Atractivo turístico,3210791905,113.9,False
+ATR15,Parapente (Buenavista),Atractivo turístico,4466814975,140.9,False
+FIN01,Finca El Ocaso,Finca u hotel rural,2922930733,445.8,False
+FIN02,Hotel Café Bernal by BKPA,Finca u hotel rural,2923976247,76.1,False
+FIN03,Hacienda Combia by PABK,Finca u hotel rural,6387018054,720.8,True
+FIN04,Finca Turística Machángara,Finca u hotel rural,2101750627,557.7,True
+FIN05,Tukki Ecolodge,Finca u hotel rural,7623048335,207.1,False
+FIN06,Finca Típica La Colina,Finca u hotel rural,7630180980,322.5,False
+FIN07,El Percal Hacienda Hotel,Finca u hotel rural,10149145145,627.2,True
+FIN08,Bio Habitat Hotel,Finca u hotel rural,10172977534,36.0,False
+ACO01,Trilladora de Café de Colombia S.A.S. (Trillaescol),Centro de acopio o trilladora,9683368406,82.6,False
+ACO02,Cooperativa de Caficultores del Quindío (COOCAFEQ) – Sede Principal y Trilladora,Centro de acopio o trilladora,960391207,43.9,False
+ACO03,Cooperativa de Caficultores del Quindío – Seccional Quimbaya,Centro de acopio o trilladora,3989083883,66.3,False
+ACO04,Cooperativa de Caficultores del Quindío – Compra de Café Pijao,Centro de acopio o trilladora,2735374204,52.4,False
+ACO05,Almacafé,Centro de acopio o trilladora,2976638160,30.8,False

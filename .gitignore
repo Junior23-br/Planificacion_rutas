@@ -13,3 +13,10 @@ data/raw/*
 !data/raw/.gitkeep
 data/processed/*
 !data/processed/.gitkeep
+
+# Excepciones: datos procesados que sí se versionan
+!data/processed/componente.graphml
+!data/processed/asociacion_lugares.csv
+
+# Caché de OSMnx
+cache/
