@@ -1,0 +1,5 @@
+Sistema operativo: Windows-11-10.0.26200-SP0
+Procesador: Intel Core i7-13620H (13.ª generación)
+Python: 3.14.7
+Memoria RAM: 15,71 GB
+Datos: data/processed/matriz_tiempos.csv

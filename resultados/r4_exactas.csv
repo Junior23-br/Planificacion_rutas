@@ -1,0 +1,17 @@
+metodo,k,repeticiones,mediana_ms,tiempo_optimo_s,estado,semilla
+fuerza_bruta,5,5,0.454,13885.409,completada,2026
+fuerza_bruta,6,5,2.855,15750.564,completada,2026
+fuerza_bruta,7,5,25.096,15927.913,completada,2026
+fuerza_bruta,8,5,229.173,16613.495,completada,2026
+fuerza_bruta,9,5,2115.463,16613.495,completada,2026
+fuerza_bruta,10,5,13594.963,16626.321,completada,2026
+fuerza_bruta,11,1,139099.013,16626.321,completada,2026
+fuerza_bruta,12,0,,,no completada,2026
+held_karp,5,5,0.059,13885.409,completada,2026
+held_karp,6,5,0.137,15750.564,completada,2026
+held_karp,7,5,0.320,15927.912999999999,completada,2026
+held_karp,8,5,0.768,16613.495,completada,2026
+held_karp,9,5,1.979,16613.495,completada,2026
+held_karp,10,5,4.656,16626.321,completada,2026
+held_karp,11,5,10.945,16626.321,completada,2026
+held_karp,12,5,26.586,16626.321,completada,2026
