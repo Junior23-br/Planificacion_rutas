@@ -1,0 +1,6 @@
+Sistema operativo: Windows-11-10.0.26200-SP0
+Procesador: AMD Ryzen 7 5800H with Radeon Graphics
+Python: 3.14.7
+Memoria RAM: 7,34 GB (8 GB instalados)
+Condiciones R3: 5 repeticiones, mediana, semilla 2026, recolector de basura desactivado al medir
+Datos: resultados/r3_tiempos.csv
