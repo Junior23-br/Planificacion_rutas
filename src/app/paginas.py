@@ -196,6 +196,34 @@ def _mostrar_plan(titulo, res, ids, nombre, dur):
                    f'{fmt_tiempo(antes)} a {fmt_tiempo(despues)}.')
 
 
+def _mapa_itinerario(res, ids, nombre):
+    """Dibuja el recorrido: cada tramo entre lugares sigue la ruta real por carretera (Dijkstra)."""
+    import folium
+    from streamlit_folium import st_folium
+    from src.caminos.dijkstra import ruta_minima
+
+    red = datos_red()
+    idx_red = {l["id"]: l["idx"] for l in red["lugares"]}       # id del catálogo -> nodo del grafo
+    paradas = [ids[i] for i in res["ruta"]]                      # empieza y termina en el inicio
+    colores = ["#c0392b", "#2980b9", "#27ae60", "#8e44ad", "#d35400", "#16a085", "#7f8c8d", "#2c3e50"]
+    todos = []
+    mapa = folium.Map(location=red["coord"][idx_red[paradas[0]]], zoom_start=10)
+    for n in range(len(paradas) - 1):
+        _, camino, _ = ruta_minima(red["adj"], idx_red[paradas[n]], idx_red[paradas[n + 1]])
+        puntos = [red["coord"][i] for i in camino]
+        todos += puntos
+        folium.PolyLine(puntos, weight=5, color=colores[n % len(colores)], opacity=0.85,
+                        tooltip=f"Tramo {n + 1}: {paradas[n]} → {paradas[n + 1]}").add_to(mapa)
+    for n, p in enumerate(paradas[:-1]):                         # la última parada repite el inicio
+        folium.Marker(red["coord"][idx_red[p]], tooltip=f"{n}. {p} · {nombre[p]}",
+                      icon=folium.DivIcon(html=(
+                          '<div style="background:#fff;border:2px solid #2c3e50;border-radius:50%;'
+                          'width:26px;height:26px;line-height:22px;text-align:center;'
+                          f'font-weight:bold;">{n}</div>'))).add_to(mapa)
+    mapa.fit_bounds(todos)
+    st_folium(mapa, height=550, width=1100, returned_objects=[])
+
+
 def itinerario():
     import random
     from src.ruta_optima.itinerario import armar_itinerario, JORNADA_S
@@ -260,6 +288,12 @@ def itinerario():
               delta_color="inverse")
     st.caption("Las visitas son las mismas en ambos, así que la diferencia es solo de desplazamientos. "
                "Held-Karp es óptimo: la heurística nunca puede dar menos.")
+
+    st.subheader("Recorrido en el mapa")
+    cual = st.radio("Recorrido a dibujar", ["Held-Karp (óptimo)", "Vecino más cercano"], horizontal=True)
+    _mapa_itinerario(r["hk"] if cual.startswith("Held") else r["vm"], ids, nombre)
+    st.caption("Los números indican el orden de visita (0 = partida y regreso). Cada color es un tramo; "
+               "el trazo sigue la ruta real por carretera calculada con Dijkstra.")
 
     with st.expander("Si la heurística decidiera sola qué atractivos quitar"):
         _mostrar_plan("Vecino más cercano con su propia exclusión", r["vm_solo"], ids, nombre, dur)
