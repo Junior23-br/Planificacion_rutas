@@ -1,0 +1,7 @@
+streamlit>=1.67
+folium>=1.0
+streamlit-folium>=0.27
+osmnx>=2.1
+pandas>=3.1
+numpy>=2.5
+matplotlib>=3.11
