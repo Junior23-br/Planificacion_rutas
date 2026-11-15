@@ -141,6 +141,30 @@ def resultados():
         mostrar_archivos("r4")
 
 
+def envolvente():
+    import folium
+    from streamlit_folium import st_folium
+
+    st.header("Envolvente convexa de la red vial (R3)")
+    ruta_csv = os.path.join(RESULTADOS, "r3_envolvente.csv")
+    if not os.path.exists(ruta_csv):
+        st.info("Falta resultados/r3_envolvente.csv; se genera con "
+                "`python -m src.envolvente.calcular_envolvente`.")
+        return
+    v = pd.read_csv(ruta_csv)
+    puntos = list(zip(v["lat"], v["lon"]))
+    st.write(f"Menor polígono convexo que contiene los nodos de la red: {len(v)} vértices. "
+             "Calculada con divide y vencerás propio sobre las coordenadas en UTM 18N.")
+    mapa = folium.Map(location=[v["lat"].mean(), v["lon"].mean()], zoom_start=9)
+    folium.Polygon(puntos, color="#2c3e50", weight=3, fill=True, fill_opacity=0.15).add_to(mapa)
+    for lat, lon in puntos:
+        folium.CircleMarker((lat, lon), radius=4, color="#c0392b", fill=True).add_to(mapa)
+    mapa.fit_bounds(puntos)
+    st_folium(mapa, height=550, width=1100, returned_objects=[])
+    with st.expander("Vértices (x, y en metros; lon, lat en grados)"):
+        st.dataframe(v)
+
+
 def pendiente(nombre):
     st.header(nombre)
     st.info("Esta página todavía no está construida.")

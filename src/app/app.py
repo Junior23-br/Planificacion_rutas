@@ -20,7 +20,7 @@ st.set_page_config(page_title="Rutas del Paisaje Cultural Cafetero", layout="wid
 PAGINAS = {
     "Inicio": paginas.inicio,
     "Ruta (R2)": paginas.ruta,
-    "Envolvente (R3)": lambda: paginas.pendiente("Envolvente convexa (R3)"),
+    "Envolvente (R3)": paginas.envolvente,
     "Itinerario (R4)": paginas.itinerario,
     "Resultados R1-R4": paginas.resultados,
     "Sustentación": lambda: paginas.pendiente("Ayudas para la sustentación"),
