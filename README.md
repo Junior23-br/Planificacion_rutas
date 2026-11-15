@@ -5,7 +5,7 @@ Planificación de rutas turísticas sobre la red vial del Quindío: construcció
 caminos de menor tiempo con Dijkstra (R2), envolvente convexa (R3), itinerario de un día con
 Held-Karp y heurística del vecino más cercano (R4) y aplicación demostrativa (R5).
 
-Integrantes: Meller, Jefferson Rodríguez y Cesar (completar apellidos).
+Integrantes: Meller Batero, Jefferson Rodríguez y Cesar Tulcan
 
 ## Requisitos
 - Python 3.14 (versión con la que se probó todo).
@@ -47,7 +47,11 @@ Siempre desde la raíz del repositorio.
 (Cesar completa: comandos para construir la red, la matriz de tiempos y las mediciones de Dijkstra.)
 
 ### R3
-(Meller completa: comando para calcular la envolvente convexa.)
+```
+python -m src.envolvente.calcular_envolvente
+python -m src.envolvente.mediciones_r3
+python -m src.envolvente.grafica_r3
+```
 
 ### R4
 ```
@@ -63,7 +67,7 @@ reporta como "no completada".
 
 ## Pruebas
 ```
-python -m unittest tests.test_tsp tests.test_itinerario -v
+python -m unittest tests.test_tsp tests.test_itinerario tests.test_dijkstra tests.test_envolvente -v
 ```
 
 ## Estructura
@@ -72,7 +76,9 @@ data/catalogo/     catálogo de lugares y atractivos
 data/processed/    grafo del Quindío y matriz de tiempos 40x40
 resultados/        tablas, gráficas y datos de las mediciones (r1_, r2_, r3_, r4_)
 specs/             especificaciones de cada requerimiento (Spec-Driven Development)
-src/caminos/       R1 y R2: grafo y Dijkstra
+src/red/           R1: descarga y preparación de la red
+src/caminos/       R2: grafo y Dijkstra
+src/envolvente/    R3: envolvente convexa
 src/ruta_optima/   R4: Held-Karp, fuerza bruta, heurística e itinerario
 src/app/           R5: aplicación Streamlit
 tests/             pruebas unitarias
@@ -81,7 +87,7 @@ tests/             pruebas unitarias
 ## Protocolo de medición
 Cada requerimiento se mide en la misma máquina, con 5 repeticiones y la mediana (si una corrida
 pasa de 1 minuto se mide una sola vez), semilla fija y límite de 5 minutos por corrida. La máquina
-usada en R4 está descrita en `resultados/r4_maquina.txt`.
+usada en cada requerimiento está descrita en `resultados/` (archivos `*_maquina.txt`).
 
 ## Uso de inteligencia artificial
 Declarado en el Anexo A del documento técnico.
