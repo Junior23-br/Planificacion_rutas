@@ -144,3 +144,100 @@ def resultados():
 def pendiente(nombre):
     st.header(nombre)
     st.info("Esta página todavía no está construida.")
+
+
+@st.cache_data
+def datos_itinerario():
+    from src.ruta_optima.itinerario import leer_catalogo, leer_matriz
+    cat = leer_catalogo("data/catalogo/catalogo_lugares.csv")
+    ids, T = leer_matriz("data/processed/matriz_tiempos.csv")
+    return cat, ids, T
+
+
+def _mostrar_plan(titulo, res, ids, nombre, dur):
+    st.subheader(titulo)
+    st.metric("Total del día", fmt_tiempo(res["total_s"]))
+    st.write(f'Desplazamientos: **{fmt_tiempo(res["viaje_s"])}** · '
+             f'Visitas: **{fmt_tiempo(res["visitas_s"])}**')
+    if res["cabe"]:
+        st.success("Cabe en la jornada de 11 h.")
+    else:
+        st.error("No cabe en la jornada de 11 h.")
+    filas = [{"Orden": n, "Id": ids[i], "Lugar": nombre[ids[i]],
+              "Visita": fmt_tiempo(dur[ids[i]]) if ids[i] in dur else "-"}
+             for n, i in enumerate(res["ruta"])]
+    st.dataframe(pd.DataFrame(filas), hide_index=True)
+    for idx, antes, despues in res["quitados"]:
+        st.warning(f'Se quitó {ids[idx]} ({nombre[ids[idx]]}): el total pasó de '
+                   f'{fmt_tiempo(antes)} a {fmt_tiempo(despues)}.')
+
+
+def itinerario():
+    import random
+    from src.ruta_optima.itinerario import armar_itinerario, JORNADA_S
+    from src.ruta_optima.medicion import SEMILLA
+    from src.ruta_optima.tsp import held_karp, vecino_mas_cercano
+
+    st.header("Itinerario de un día (R4)")
+    st.write("Se ordenan de 6 a 8 atractivos desde un punto de partida y se comprueba la jornada "
+             "de 11 h. Se resuelve con **Held-Karp** (óptimo) y con la **heurística del vecino más "
+             "cercano**, y se comparan los totales. Si no cabe, se quitan atractivos con el criterio "
+             "del grupo hasta que quepa.")
+    cat, ids, T = datos_itinerario()
+    nombre = {r["id"]: r["nombre"] for r in cat}
+    dur = {r["id"]: int(float(r["duracion_visita_min"])) * 60 for r in cat if r["id"].startswith("ATR")}
+    pos = {i: n for n, i in enumerate(ids)}
+    atr = sorted(dur)
+
+    inicio = st.selectbox("Punto de partida", ids, index=ids.index("CAB01"),
+                          format_func=lambda i: f"{i} · {nombre[i]}")
+    por_defecto = sorted(random.Random(SEMILLA).sample(atr, 7))
+    elegidos = st.multiselect("Atractivos (de 6 a 8)", atr, default=por_defecto,
+                              format_func=lambda i: f"{i} · {nombre[i]} ({dur[i] // 60} min)")
+    if not 6 <= len(elegidos) <= 8:
+        st.warning(f"Hay {len(elegidos)} atractivos elegidos; el enunciado pide entre 6 y 8.")
+        return
+
+    if st.button("Calcular itinerario"):
+        dur_idx = {pos[a]: dur[a] for a in elegidos}
+        idx_elegidos = [pos[a] for a in elegidos]
+        t0 = time.perf_counter()
+        hk = armar_itinerario(T, pos[inicio], idx_elegidos, dur_idx, JORNADA_S, held_karp)
+        ms_hk = (time.perf_counter() - t0) * 1000
+
+        # La heurística ordena los MISMOS atractivos que dejó Held-Karp
+        t0 = time.perf_counter()
+        viaje_vm, ruta_vm = vecino_mas_cercano(T, pos[inicio], hk["atractivos"])
+        ms_vm = (time.perf_counter() - t0) * 1000
+        total_vm = viaje_vm + hk["visitas_s"]
+        vm = {"ruta": ruta_vm, "viaje_s": viaje_vm, "visitas_s": hk["visitas_s"],
+              "total_s": total_vm, "quitados": [], "cabe": total_vm <= JORNADA_S,
+              "atractivos": hk["atractivos"]}
+
+        # Aparte: si la heurística también decidiera qué atractivos quitar
+        vm_solo = armar_itinerario(T, pos[inicio], idx_elegidos, dur_idx, JORNADA_S, vecino_mas_cercano)
+        st.session_state["itin"] = dict(hk=hk, vm=vm, vm_solo=vm_solo, ms_hk=ms_hk, ms_vm=ms_vm)
+
+    r = st.session_state.get("itin")
+    if not r:
+        return
+    c1, c2 = st.columns(2)
+    with c1:
+        _mostrar_plan("Held-Karp (óptimo)", r["hk"], ids, nombre, dur)
+        st.caption(f'Tiempo de cálculo (incluye la exclusión de atractivos): {r["ms_hk"]:.1f} ms')
+    with c2:
+        _mostrar_plan("Vecino más cercano (heurística)", r["vm"], ids, nombre, dur)
+        st.caption(f'Mismos atractivos que Held-Karp. Tiempo de cálculo: {r["ms_vm"]:.2f} ms')
+
+    dif = r["vm"]["total_s"] - r["hk"]["total_s"]
+    st.subheader("Diferencia entre los dos totales")
+    st.metric("Heurística − Held-Karp", fmt_tiempo(dif),
+              delta=f"{dif / r['hk']['total_s'] * 100:+.2f} % sobre el total del día",
+              delta_color="inverse")
+    st.caption("Las visitas son las mismas en ambos, así que la diferencia es solo de desplazamientos. "
+               "Held-Karp es óptimo: la heurística nunca puede dar menos.")
+
+    with st.expander("Si la heurística decidiera sola qué atractivos quitar"):
+        _mostrar_plan("Vecino más cercano con su propia exclusión", r["vm_solo"], ids, nombre, dur)
+        st.caption("Aquí no se compara con Held-Karp: al quitar atractivos distintos, los totales "
+                   "no son comparables.")

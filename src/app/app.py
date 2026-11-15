@@ -21,7 +21,7 @@ PAGINAS = {
     "Inicio": paginas.inicio,
     "Ruta (R2)": paginas.ruta,
     "Envolvente (R3)": lambda: paginas.pendiente("Envolvente convexa (R3)"),
-    "Itinerario (R4)": lambda: paginas.pendiente("Itinerario de un día (R4)"),
+    "Itinerario (R4)": paginas.itinerario,
     "Resultados R1-R4": paginas.resultados,
     "Sustentación": lambda: paginas.pendiente("Ayudas para la sustentación"),
 }

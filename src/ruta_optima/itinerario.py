@@ -23,13 +23,13 @@ from src.ruta_optima.tsp import held_karp
 JORNADA_S = 11 * 3600
 
 
-def armar_itinerario(T, inicio, atractivos, duraciones_s, jornada_s=JORNADA_S):
+def armar_itinerario(T, inicio, atractivos, duraciones_s, jornada_s=JORNADA_S, resolver=held_karp):
     """T: matriz (índices). duraciones_s: dict índice -> segundos de visita.
     Devuelve dict con ruta, tiempos, atractivos quitados (con su justificación) y si cabe."""
     actuales = list(atractivos)
     quitados = []
     while True:
-        viaje, ruta = held_karp(T, inicio, actuales)
+        viaje, ruta = resolver(T, inicio, actuales)
         visitas = sum(duraciones_s[a] for a in actuales)
         total = viaje + visitas
         if total <= jornada_s or not actuales:
@@ -37,7 +37,7 @@ def armar_itinerario(T, inicio, atractivos, duraciones_s, jornada_s=JORNADA_S):
         opciones = []                                   # (atractivo, total si se quita)
         for a in actuales:
             resto = [x for x in actuales if x != a]
-            v, _ = held_karp(T, inicio, resto)
+            v, _ = resolver(T, inicio, resto)
             opciones.append((a, v + sum(duraciones_s[x] for x in resto)))
         caben = [o for o in opciones if o[1] <= jornada_s]
         mejor = max(caben, key=lambda o: o[1]) if caben else min(opciones, key=lambda o: o[1])
