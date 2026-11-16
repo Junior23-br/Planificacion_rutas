@@ -61,6 +61,24 @@ def leer_matriz(ruta):
     assert [fila[0] for fila in filas[1:]] == ids, "ids de filas y columnas distintos"
     return ids, T
 
+def tabla_itinerario(T, ruta, ids, nombre, dur):
+    """Tabla del anexo. 'ruta' incluye el inicio al principio y al final; 'dur' va por id (segundos).
+    El tiempo acumulado cuenta desplazamientos y visitas hasta terminar la visita de esa fila."""
+    filas, acum = [], 0.0
+    ultimo = len(ruta) - 1
+    for n in range(1, len(ruta)):
+        i = ruta[n]
+        desp = T[ruta[n - 1]][i]
+        visita = 0 if n == ultimo else dur.get(ids[i], 0)
+        acum += desp + visita
+        filas.append({
+            "Orden": "Regreso" if n == ultimo else str(n),
+            "Lugar": f"{ids[i]} · {nombre[ids[i]]}",
+            "Desplazamiento desde el anterior (min)": round(desp / 60, 1),
+            "Visita (min)": "—" if n == ultimo else str(round(visita / 60)),
+            "Tiempo acumulado (h)": round(acum / 3600, 2),
+        })
+    return filas
 
 def fmt(seg):
     h, m = divmod(int(round(seg / 60)), 60)
@@ -101,6 +119,8 @@ def main():
     for idx, antes, despues in res["quitados"]:
         print(f"Se quitó {ids[idx]} ({nombre[ids[idx]]}): el total pasó de {fmt(antes)} a {fmt(despues)}")
     print("Recorrido:", " -> ".join(f"{ids[i]}" for i in res["ruta"]))
+    for f in tabla_itinerario(T, res["ruta"], ids, nombre, dur):
+        print(" | ".join(str(v) for v in f.values()))
     print(f"Desplazamientos: {fmt(res['viaje_s'])} | Visitas: {fmt(res['visitas_s'])} | "
           f"Total: {fmt(res['total_s'])} (jornada: {fmt(JORNADA_S)})")
     print("Cabe en la jornada:", "sí" if res["cabe"] else "no")
