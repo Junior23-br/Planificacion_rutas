@@ -33,6 +33,13 @@ Se ejecuta con `python -m streamlit run src/app/app.py` siguiendo el README.
 - Con los atractivos por defecto la heurística nunca da menos que Held-Karp.
 - La aplicación arranca en una máquina limpia siguiendo solo el README.
 
+## Añadido después de las funciones requeridas
+- Tema visual propio (`.streamlit/config.toml`, `src/app/estilo.py`), justificado en `docs/guia_visual.md`.
+- Panel «Cómo se calculó» al final de Ruta, Envolvente e Itinerario.
+- Página de Sustentación: recorrido por R1 a R4, simulaciones paso a paso (`src/app/simulaciones.py`,
+  comprobadas en `tests/test_simulaciones.py`), comparaciones generadas desde `resultados/`,
+  decisiones, limitaciones y fuentes.
+- Toda cifra que muestra la aplicación sale de `resultados/`, de `data/` o de un cálculo en vivo.
+
 ## Pendiente
-- Página de Envolvente convexa (depende del archivo de salida de R3).
-- Página de ayudas para la sustentación.
+- Nada.

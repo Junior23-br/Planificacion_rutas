@@ -1,0 +1,33 @@
+# Tema visual de la aplicación (R5). La justificación de cada valor está en docs/guia_visual.md.
+# Streamlit lee este archivo solo si se ejecuta desde la raíz del repositorio:
+#     python -m streamlit run src/app/app.py
+
+[theme]
+base = "light"
+primaryColor = "#005D5D"              # acento: verde azulado oscuro (7,71:1 sobre blanco)
+backgroundColor = "#FFFFFF"
+secondaryBackgroundColor = "#F4F4F4"  # superficies: barra lateral, campos, tablas
+textColor = "#161616"                 # 18,10:1 sobre blanco
+linkColor = "#005D5D"
+borderColor = "#E0E0E0"
+showWidgetBorder = true
+showSidebarBorder = true
+baseRadius = "4px"
+buttonRadius = "4px"
+
+# Tipografías: IBM Plex Sans (texto y títulos) e IBM Plex Mono (código y cifras).
+# Se cargan de Google Fonts; sin conexión se usa la fuente del sistema.
+font = "'IBM Plex Sans':https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap, sans-serif"
+codeFont = "'IBM Plex Mono':https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap, monospace"
+baseFontSize = 16
+
+# Colores de las series en las gráficas nativas (paleta Okabe-Ito).
+chartCategoricalColors = ["#0072B2", "#D55E00", "#009E73", "#CC79A7", "#56B4E9", "#E69F00"]
+
+[theme.sidebar]
+backgroundColor = "#F4F4F4"
+secondaryBackgroundColor = "#FFFFFF"
+borderColor = "#E0E0E0"
+
+[browser]
+gatherUsageStats = false

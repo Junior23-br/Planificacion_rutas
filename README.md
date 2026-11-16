@@ -32,13 +32,18 @@ en blanco con Enter. Páginas:
 
 | Página | Qué muestra |
 |---|---|
-| Ruta (R2) | Camino de menor tiempo entre dos lugares del catálogo (Dijkstra con cola de prioridad), calculado en el momento, con mapa y tiempo |
-| Envolvente (R3) | Envolvente convexa de la red |
-| Itinerario (R4) | Recorrido de 6 a 8 atractivos con Held-Karp y con vecino más cercano, total de cada uno y diferencia |
-| Resultados R1-R4 | Tablas y gráficas de `resultados/` |
-| Sustentación | Ayudas para la sustentación |
+| Inicio | Cifras del proyecto y acceso a las demás páginas |
+| Ruta más rápida (R2) | Camino de menor tiempo entre dos lugares del catálogo (Dijkstra con cola de prioridad), calculado en el momento, con mapa y tiempo |
+| Envolvente convexa (R3) | Envolvente convexa de la red sobre el mapa, con verificación en vivo contra SciPy |
+| Itinerario de un día (R4) | Recorrido de 6 a 8 atractivos con Held-Karp y con vecino más cercano, total de cada uno, diferencia y mapa |
+| Resultados | Tablas y gráficas de `resultados/`, con la máquina de cada medición |
+| Sustentación | Recorrido por R1 a R4, simulaciones paso a paso, comparaciones, decisiones y fuentes |
 
-La página de Ruta tarda unos segundos la primera vez porque carga el grafo.
+Las páginas de Ruta, Envolvente e Itinerario terminan con un panel «Cómo se calculó»: qué
+algoritmos se usaron, por qué, su complejidad y los datos de esa ejecución.
+
+La página de Ruta tarda unos segundos la primera vez porque carga el grafo. El tema visual está en
+`.streamlit/config.toml` y `src/app/estilo.py`; su justificación, en `docs/guia_visual.md`.
 
 ## Ejecutar cada requerimiento por consola
 Siempre desde la raíz del repositorio.
@@ -67,7 +72,7 @@ reporta como "no completada".
 
 ## Pruebas
 ```
-python -m unittest tests.test_tsp tests.test_itinerario tests.test_dijkstra tests.test_envolvente -v
+python -m unittest tests.test_tsp tests.test_itinerario tests.test_dijkstra tests.test_envolvente tests.test_simulaciones -v
 ```
 
 ## Estructura
@@ -80,7 +85,8 @@ src/red/           R1: descarga y preparación de la red
 src/caminos/       R2: grafo y Dijkstra
 src/envolvente/    R3: envolvente convexa
 src/ruta_optima/   R4: Held-Karp, fuerza bruta, heurística e itinerario
-src/app/           R5: aplicación Streamlit
+src/app/           R5: aplicación Streamlit (app, paginas, sustentacion, simulaciones, estilo, datos, graficas)
+docs/              guía visual de la aplicación
 tests/             pruebas unitarias
 ```
 
