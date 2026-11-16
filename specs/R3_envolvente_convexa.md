@@ -53,4 +53,4 @@ Complejidad: T(n) = 2T(n/2) + O(n), que da O(n log n) (teorema maestro, Cormen e
 - Investigar y citar qué algoritmo y qué lenguaje usa SciPy por dentro: ConvexHull se apoya en la librería Qhull, que está en C y usa Quickhull (Barber, Dobkin y Huhdanpaa, "The Quickhull algorithm for convex hulls", ACM Transactions on Mathematical Software, 1996). Confirma la cita en la documentación de SciPy y de Qhull antes de ponerla en el documento.
 
 ## Estado
-Pendiente
+Completado

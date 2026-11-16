@@ -1,6 +1,6 @@
 # R5. Aplicación demostrativa
 
-**Estado:** En curso
+**Estado:** Completado
 
 ## Objetivo
 Aplicación web local que permita usar y mostrar lo construido en R1 a R4 sin tocar el código.
