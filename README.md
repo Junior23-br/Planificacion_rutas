@@ -49,7 +49,19 @@ La página de Ruta tarda unos segundos la primera vez porque carga el grafo. El 
 Siempre desde la raíz del repositorio.
 
 ### R1 y R2
-(Cesar completa: comandos para construir la red, la matriz de tiempos y las mediciones de Dijkstra.)
+Estos scripts no son módulos: se ejecutan como archivo y en este orden (las mediciones de R1 y R2 tardan; la descarga necesita internet):
+```
+python src/red/descarga_red.py        # descarga la red de OSM del Quindío
+python src/red/pesos.py               # asigna tiempo a cada arista
+python src/red/guardar_grafo.py       # deja la componente conexa más grande
+python src/red/asociacion.py          # asocia cada lugar del catálogo a su nodo
+python src/red/componente.py          # mediciones de R1 (2/5/10/20 km y departamento)
+python src/caminos/mediciones_r2.py   # mediciones de Dijkstra (lineal vs. cola)
+python src/caminos/matriz_tiempos.py  # matriz de tiempos entre lugares
+python src/caminos/grafica_r1.py
+python src/caminos/grafica_r2.py
+```
+Los archivos ya generados están en `data/processed/` y `resultados/`, así que la aplicación y R3/R4 funcionan sin repetir estos pasos.
 
 ### R3
 ```
